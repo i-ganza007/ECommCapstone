@@ -1,21 +1,22 @@
-// Renders "$1,842.56" with the cents de-emphasised, the way the reference does it.
+import Money from "./Money"
+
+// Block-level variant used inside StatCard: a caption above the figure.
+// Because this renders a <div>, its parent must not be a <p>.
 export default function MoneyStatCard({
     amount,
-    className = "",
+    label = "Total Products",
+    className = "text-3xl font-semibold text-zinc-900",
     centsClassName = "text-zinc-400",
 }: {
     amount: number
+    label?: string
     className?: string
     centsClassName?: string
 }) {
-   
-
     return (
-        <div className="flex flex-col gap-5">
-            <span className={className}>
-            {amount}
-            <span className={centsClassName}></span>
-           </span>
+        <div className="flex flex-col gap-1.5">
+            <span className="text-lg text-zinc-500">{label}</span>
+            <Money amount={amount} className={className} centsClassName={centsClassName} />
         </div>
     )
 }

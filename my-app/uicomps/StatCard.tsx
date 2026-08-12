@@ -25,9 +25,7 @@ export default function StatCard({
             </div>
 
             <div className="space-y-1.5">
-                <p className="text-3xl font-semibold text-zinc-900">
-                    <MoneyStatCard amount={amount} />
-                </p>
+                <MoneyStatCard amount={amount} />
                 {/* Icon + sign carry the meaning, so this never relies on colour alone. */}
                 <p
                     className={`flex items-center gap-1 text-sm ${

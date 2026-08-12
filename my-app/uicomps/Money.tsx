@@ -1,4 +1,5 @@
 // Renders "$1,842.56" with the cents de-emphasised, the way the reference does it.
+// Inline-only (a <span>), so it is safe to drop inside a <p> or another <span>.
 export default function Money({
     amount,
     className = "",
@@ -8,15 +9,13 @@ export default function Money({
     className?: string
     centsClassName?: string
 }) {
-   
+    const [dollars, cents] = amount.toFixed(2).split(".")
+    const withSeparators = Number(dollars).toLocaleString("en-US")
 
     return (
-        <div className="flex flex-col gap-5">
-            <p className="text-lg">Total Products</p>
-            <span className={className}>
-            {amount}
-            <span className={centsClassName}></span>
-           </span>
-        </div>
+        <span className={className}>
+            ${withSeparators}
+            <span className={centsClassName}>.{cents}</span>
+        </span>
     )
 }
