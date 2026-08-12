@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Montserrat } from "next/font/google";
+import { Geist, Geist_Mono, Montserrat, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import NavBar from "@/uicomps/Navbar"
 
 const montserrat = Montserrat({ subsets: ["latin"], variable: "--font-montserrat" });
+
+const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,9 +27,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", montserrat.variable)}
+      className={cn("min-h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", montserrat.variable, playfair.variable)}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-screen w-full">
+        {/* The gradient lives on this wrapper, not <body> — a body background is
+            propagated to the canvas and tiles once the page scrolls past 100vh. */}
+        <div className="flex min-h-screen w-full flex-col bg-linear-to-b/oklab from-[#6E0B0B] from-5% via-[#D8400A] via-45% to-[#F3B45E] px-10 py-6">
+          <NavBar />
+          {children}
+        </div>
+      </body>
     </html>
   );
 }
