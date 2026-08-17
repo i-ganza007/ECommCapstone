@@ -1,7 +1,10 @@
+"use client"
 import { ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Field } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import ShadcnDropDown from "./ShadcnDropDown"
+import ShadcnDropDownCheckbox from "./ShadcnDropDownCheckbox"
 export default function ProductListHeader({ resultCount }: { resultCount: number }) {
     return (
         <header>
@@ -23,16 +26,21 @@ export default function ProductListHeader({ resultCount }: { resultCount: number
                     type="button"
                     className="flex items-center grow-5 justify-center gap-1.5 px-6 py-4 transition-opacity hover:opacity-70"
                 >
-                    Filters
-                    <ChevronDown className="size-4" />
+                    
+                    <ShadcnDropDownCheckbox>
+                        Filters
+                        <ChevronDown className="size-4" />
+                    </ShadcnDropDownCheckbox>
                 </button>
 
                 <button
                     type="button"
                     className="flex items-center grow-3 justify-center gap-1.5 px-6 py-4 transition-opacity hover:opacity-70"
                 >
-                    Sort by / popularity
-                    <ChevronDown className="size-4" />
+                    
+                    <ShadcnDropDown>
+                        Sort by / popularity <ChevronDown className="size-4" />
+                    </ShadcnDropDown>
                 </button>
             </div>
         </header>

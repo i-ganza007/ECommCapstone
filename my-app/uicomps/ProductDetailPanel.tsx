@@ -1,8 +1,10 @@
 "use client"
 
 import { Drawer } from "@base-ui/react/drawer"
+import { Tabs } from "@base-ui/react/tabs"
 import { Beaker, Droplets, Leaf, Package, Ruler, ShoppingBag, Tag, X } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
+import type { ReactNode } from "react"
 
 import { ProductImage, Rating, type Product } from "@/uicomps/ProductCard"
 import { productDrawer } from "@/uicomps/productDrawer"
@@ -11,6 +13,9 @@ import { productDrawer } from "@/uicomps/productDrawer"
  * The detail panel for the product grid. Mounted once per page; every card is a
  * detached trigger that hands its product over as the payload (see productDrawer).
  * Slides in from the right, and can be swiped away on touch.
+ *
+ * The content is split across tabs rather than stacked into one long column, so
+ * that on a normal screen no part of the panel has to be scrolled to be read.
  */
 export default function ProductDetailPanel() {
     return (
@@ -35,9 +40,9 @@ function PanelBody({ product }: { product: Product }) {
     const inStock = product.stock === undefined || product.stock > 0
 
     return (
-        <Drawer.Content className="text-brand">
-            {/* Stays put while the rest scrolls, so closing is always one click away. */}
-            <div className="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-hairline bg-paper px-6 py-4">
+        // min-h-0 lets the tab area, not the panel, absorb the leftover height.
+        <Drawer.Content className="flex h-full min-h-0 flex-col text-brand">
+            <div className="flex shrink-0 items-center justify-between gap-4 border-b border-hairline px-6 py-4">
                 <Drawer.Close
                     aria-label="Close product details"
                     className="grid size-9 place-items-center rounded-full border border-hairline transition-colors hover:bg-hairline/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
@@ -55,13 +60,9 @@ function PanelBody({ product }: { product: Product }) {
                 </button>
             </div>
 
-            <div className="border-b border-hairline">
-                <div className="relative grid h-64 w-full place-items-center bg-hairline/20">
-                    <ProductImage name={name} image={image} sizes="(max-width: 480px) 100vw, 28rem" />
-                </div>
-            </div>
-
-            <div className="border-b border-hairline px-6 py-6">
+            {/* Identity sits above the tabs, so the panel's title and price stay put
+                no matter which tab is open — and Drawer.Title always labels the dialog. */}
+            <div className="shrink-0 border-b border-hairline px-6 py-5">
                 <p className="h-5 font-serif text-xs italic">{isNew ? "new arrival" : ""}</p>
                 <Drawer.Title className="font-serif text-3xl lowercase">{name}</Drawer.Title>
 
@@ -77,46 +78,79 @@ function PanelBody({ product }: { product: Product }) {
                 </div>
             </div>
 
-            {/* Same trick as the product grid: hairlines are the ruled background
-                showing through the gaps between cells. */}
-            <section className="border-b border-hairline px-6 py-6">
-                <h3 className="mb-4 text-sm">Overview</h3>
-                <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-xl bg-hairline">
-                    <Stat label="Rating" value={`${rating}/5`} />
-                    <Stat label="Reviews" value={String(reviews)} />
-                    <Stat label="Size" value={size ?? "—"} />
-                    <Stat
-                        label="Stock"
-                        value={product.stock === undefined ? "—" : String(product.stock)}
-                    />
-                </dl>
-            </section>
+            <Tabs.Root defaultValue="overview" className="flex min-h-0 flex-1 flex-col">
+                <Tabs.List className="relative flex shrink-0 border-b border-hairline px-6">
+                    <PanelTab value="overview">Overview</PanelTab>
+                    <PanelTab value="details">Details</PanelTab>
+                    <PanelTab value="specs">Specs</PanelTab>
 
-            {description && (
-                <section className="border-b border-hairline px-6 py-6">
-                    <h3 className="mb-3 text-sm">Details</h3>
-                    <Drawer.Description className="text-sm leading-relaxed text-brand/80">
-                        {description}
-                    </Drawer.Description>
-                </section>
-            )}
+                    <Tabs.Indicator className="absolute bottom-0 left-0 h-px w-(--active-tab-width) translate-x-(--active-tab-left) bg-brand transition-[translate,width] duration-200 ease-out" />
+                </Tabs.List>
 
-            <section className="px-6 py-6">
-                <h3 className="mb-2 text-sm">Product Info</h3>
-                <dl>
-                    <InfoRow icon={Tag} label="SKU" value={sku} />
-                    <InfoRow icon={Ruler} label="Size" value={size} />
-                    <InfoRow icon={Droplets} label="Texture" value={product.texture} />
-                    <InfoRow icon={Leaf} label="Skin type" value={product.skinType} />
-                    <InfoRow icon={Beaker} label="Key ingredient" value={product.keyIngredient} />
-                    <InfoRow
-                        icon={Package}
-                        label="Availability"
-                        value={inStock ? "In stock" : "Sold out"}
-                    />
-                </dl>
-            </section>
+                {/* Each panel is sized to fit; overflow-y-auto is only a safety valve for
+                    very short viewports. Base UI gives the active panel tabIndex=0, so it
+                    stays keyboard-scrollable if that ever kicks in. */}
+                <Tabs.Panel value="overview" className={tabPanelClassName}>
+                    <div className="relative grid h-48 w-full place-items-center rounded-xl bg-hairline/20">
+                        <ProductImage
+                            name={name}
+                            image={image}
+                            sizes="(max-width: 480px) 100vw, 28rem"
+                        />
+                    </div>
+
+                    {/* Same trick as the product grid: hairlines are the ruled background
+                        showing through the gaps between cells. */}
+                    <dl className="mt-5 grid grid-cols-2 gap-px overflow-hidden rounded-xl bg-hairline">
+                        <Stat label="Rating" value={`${rating}/5`} />
+                        <Stat label="Reviews" value={String(reviews)} />
+                        <Stat label="Size" value={size ?? "—"} />
+                        <Stat
+                            label="Stock"
+                            value={product.stock === undefined ? "—" : String(product.stock)}
+                        />
+                    </dl>
+                </Tabs.Panel>
+
+                <Tabs.Panel value="details" className={tabPanelClassName}>
+                    {/* Deliberately not <Drawer.Description>: that sets aria-describedby on
+                        the dialog, and this text unmounts whenever another tab is active. */}
+                    <p className="text-sm leading-relaxed text-brand/80">
+                        {description ?? "No description has been written for this product yet."}
+                    </p>
+                </Tabs.Panel>
+
+                <Tabs.Panel value="specs" className={tabPanelClassName}>
+                    <dl>
+                        <InfoRow icon={Tag} label="SKU" value={sku} />
+                        <InfoRow icon={Ruler} label="Size" value={size} />
+                        <InfoRow icon={Droplets} label="Texture" value={product.texture} />
+                        <InfoRow icon={Leaf} label="Skin type" value={product.skinType} />
+                        <InfoRow
+                            icon={Beaker}
+                            label="Key ingredient"
+                            value={product.keyIngredient}
+                        />
+                        <InfoRow
+                            icon={Package}
+                            label="Availability"
+                            value={inStock ? "In stock" : "Sold out"}
+                        />
+                    </dl>
+                </Tabs.Panel>
+            </Tabs.Root>
         </Drawer.Content>
+    )
+}
+
+function PanelTab({ value, children }: { value: string; children: ReactNode }) {
+    return (
+        <Tabs.Tab
+            value={value}
+            className="-mb-px px-4 py-3 text-sm text-brand/60 transition-colors hover:text-brand focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand data-active:text-brand"
+        >
+            {children}
+        </Tabs.Tab>
     )
 }
 
@@ -151,10 +185,13 @@ function InfoRow({
     )
 }
 
+const tabPanelClassName =
+    "min-h-0 flex-1 overflow-y-auto px-6 py-5 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand"
+
 const backdropClassName =
     "fixed inset-0 min-h-dvh bg-black opacity-[calc(0.35*(1-var(--drawer-swipe-progress)))] transition-opacity duration-[450ms] ease-[cubic-bezier(0.32,0.72,0,1)] data-swiping:duration-0 data-starting-style:opacity-0 data-ending-style:opacity-0 data-ending-style:duration-[calc(var(--drawer-swipe-strength)*400ms)]"
 
 // --bleed keeps an extra slab of panel past the right edge, so an overshooting
 // swipe never tears open a gap between the panel and the edge of the screen.
 const popupClassName =
-    "[--bleed:3rem] -mr-[3rem] h-full w-[calc(28rem+3rem)] max-w-[calc(100vw-2rem+3rem)] overflow-y-auto overscroll-contain border-l border-hairline bg-paper pr-[3rem] shadow-[-0.5rem_0_2rem] shadow-black/10 outline-none touch-auto [transform:translateX(var(--drawer-swipe-movement-x))] transition-transform duration-[450ms] ease-[cubic-bezier(0.32,0.72,0,1)] data-swiping:select-none data-starting-style:[transform:translateX(calc(100%-var(--bleed)+2px))] data-ending-style:[transform:translateX(calc(100%-var(--bleed)+2px))] data-ending-style:duration-[calc(var(--drawer-swipe-strength)*400ms)]"
+    "[--bleed:3rem] -mr-[3rem] flex h-full w-[calc(28rem+3rem)] max-w-[calc(100vw-2rem+3rem)] flex-col overflow-hidden overscroll-contain border-l border-hairline bg-paper pr-[3rem] shadow-[-0.5rem_0_2rem] shadow-black/10 outline-none touch-auto [transform:translateX(var(--drawer-swipe-movement-x))] transition-transform duration-[450ms] ease-[cubic-bezier(0.32,0.72,0,1)] data-swiping:select-none data-starting-style:[transform:translateX(calc(100%-var(--bleed)+2px))] data-ending-style:[transform:translateX(calc(100%-var(--bleed)+2px))] data-ending-style:duration-[calc(var(--drawer-swipe-strength)*400ms)]"
