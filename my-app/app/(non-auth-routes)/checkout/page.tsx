@@ -98,7 +98,6 @@ function CheckoutLine({ item }: { item: CartItem }) {
     const removeFromCart = useCartStore((state) => state.removeFromCart)
 
     const id = cartItemId(item)
-    // stock: undefined means "not tracked", so there is no ceiling to hit.
     const atStockLimit = item.stock !== undefined && item.quantity >= item.stock
 
     return (
@@ -123,7 +122,6 @@ function CheckoutLine({ item }: { item: CartItem }) {
                     <Minus className="size-3.5" />
                 </StepperButton>
 
-                {/* tabular-nums stops the row from twitching as the digits change. */}
                 <span className="min-w-8 text-center text-sm tabular-nums" aria-live="polite">
                     {item.quantity}
                 </span>

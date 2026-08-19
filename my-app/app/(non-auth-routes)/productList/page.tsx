@@ -178,12 +178,10 @@ const PRODUCTS: Product[] = [
 
 export default function ProductList() {
     return (
-        // Width and side margin come from the layout, so this just fills it —
-        // same span as the dashboard grid, on a light panel.
+   
         <main className="mt-8 overflow-hidden rounded-3xl border border-hairline bg-paper">
             <ProductListHeader resultCount={PRODUCTS.length} />
 
-            {/* Hairlines come from the gaps: a ruled background showing through. */}
             <div className="grid grid-cols-4 gap-0.5 bg-hairline">
                 {PRODUCTS.map((product) => (
                     <div key={product.name} className="bg-paper">
@@ -192,7 +190,6 @@ export default function ProductList() {
                 ))}
             </div>
 
-            {/* One panel for the whole grid — each card opens it with its own payload. */}
             <ProductDetailPanel />
         </main>
     )

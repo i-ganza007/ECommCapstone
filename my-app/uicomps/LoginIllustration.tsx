@@ -1,11 +1,5 @@
 "use client"
 
-// Four flat-geometric characters sharing one baseline, drawn as a single inline
-// SVG so the whole thing scales with its container and needs no image asset.
-// Draw order is back-to-front: purple, charcoal, yellow, then orange on top.
-//
-// Each character is rigged in two parts: a body group that leans from its foot
-// on the baseline, and a face group whose pupils track the cursor inside it.
 
 import * as React from "react"
 
@@ -17,32 +11,20 @@ const ORANGE = "#f98336"
 const VIEW_W = 640
 const VIEW_H = 520
 
-// How far the cursor must sit from a face before that character is looking as
-// hard as it can. Roughly two thirds of the drawing's width, so a cursor over
-// the form on the right still reads as "the whole cast turned to watch".
 const SATURATION = 380
 
-// Per-frame approach rate. The pupils chase harder than the bodies, so a glance
-// lands first and the lean follows a beat later — that lag is most of the charm.
+
 const GAZE_EASE = 0.16
 const BODY_EASE = 0.07
 
 type Rig = {
-    /** Point on the baseline the body pivots around. */
     pivot: readonly [number, number]
-    /** Centre of the face, i.e. what the cursor is measured against. */
     face: readonly [number, number]
-    /** Degrees of lean at full deflection. */
     lean: number
-    /** Pixels the character lifts when the cursor is overhead. */
     rise: number
-    /** Pixels the pupils travel at full deflection. */
     gaze: number
 }
 
-// Deliberately uneven: a tall block tipping 1.6° swings its head further than
-// the squat arch does at 3°, and staggering the values keeps them from moving
-// as one rigid unit.
 const RIGS = {
     purple: { pivot: [277, 520], face: [306, 38], lean: 1.6, rise: 5, gaze: 3 },
     charcoal: { pivot: [400, 520], face: [446, 201], lean: 2.2, rise: 4, gaze: 4 },
@@ -66,8 +48,6 @@ export default function LoginIllustration({ className }: { className?: string })
         if (!svg) return
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
 
-        // `amp` fades the whole rig in and out, so "cursor has left the window"
-        // settles everyone back to the drawn pose instead of freezing mid-lean.
         const target = { x: VIEW_W / 2, y: VIEW_H / 2, amp: 0 }
         const gaze = { x: VIEW_W / 2, y: VIEW_H / 2, amp: 0 }
         const body = { x: VIEW_W / 2, y: VIEW_H / 2, amp: 0 }
@@ -79,7 +59,6 @@ export default function LoginIllustration({ className }: { className?: string })
             frame = 0
 
             if (client) {
-                // One layout read per frame, and only while something is moving.
                 const rect = svg.getBoundingClientRect()
                 if (rect.width > 0 && rect.height > 0) {
                     target.x = ((client.x - rect.left) / rect.width) * VIEW_W

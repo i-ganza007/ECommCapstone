@@ -10,14 +10,6 @@ import { useCartStore } from "@/store/store"
 import { ProductImage, Rating, type Product } from "@/uicomps/ProductCard"
 import { productDrawer } from "@/uicomps/productDrawer"
 
-/**
- * The detail panel for the product grid. Mounted once per page; every card is a
- * detached trigger that hands its product over as the payload (see productDrawer).
- * Slides in from the right, and can be swiped away on touch.
- *
- * The content is split across tabs rather than stacked into one long column, so
- * that on a normal screen no part of the panel has to be scrolled to be read.
- */
 export default function ProductDetailPanel() {
     return (
         <Drawer.Root handle={productDrawer} swipeDirection="right">
@@ -40,12 +32,10 @@ function PanelBody({ product }: { product: Product }) {
     const { name, price, rating, reviews, isNew, image, description, size, sku } = product
     const inStock = product.stock === undefined || product.stock > 0
 
-    // Subscribing to the action alone, not to items — this panel never renders
-    // the cart, so it should not re-render when the cart changes.
+
     const addToCart = useCartStore((state) => state.addToCart)
 
     return (
-        // min-h-0 lets the tab area, not the panel, absorb the leftover height.
         <Drawer.Content className="flex h-full min-h-0 flex-col text-brand">
             <div className="flex shrink-0 items-center justify-between gap-4 border-b border-hairline px-6 py-4">
                 <Drawer.Close
@@ -66,8 +56,6 @@ function PanelBody({ product }: { product: Product }) {
                 </button>
             </div>
 
-            {/* Identity sits above the tabs, so the panel's title and price stay put
-                no matter which tab is open — and Drawer.Title always labels the dialog. */}
             <div className="shrink-0 border-b border-hairline px-6 py-5">
                 <p className="h-5 font-serif text-xs italic">{isNew ? "new arrival" : ""}</p>
                 <Drawer.Title className="font-serif text-3xl lowercase">{name}</Drawer.Title>
@@ -93,9 +81,6 @@ function PanelBody({ product }: { product: Product }) {
                     <Tabs.Indicator className="absolute bottom-0 left-0 h-px w-(--active-tab-width) translate-x-(--active-tab-left) bg-brand transition-[translate,width] duration-200 ease-out" />
                 </Tabs.List>
 
-                {/* Each panel is sized to fit; overflow-y-auto is only a safety valve for
-                    very short viewports. Base UI gives the active panel tabIndex=0, so it
-                    stays keyboard-scrollable if that ever kicks in. */}
                 <Tabs.Panel value="overview" className={tabPanelClassName}>
                     <div className="relative grid h-48 w-full place-items-center rounded-xl bg-hairline/20">
                         <ProductImage
@@ -105,8 +90,6 @@ function PanelBody({ product }: { product: Product }) {
                         />
                     </div>
 
-                    {/* Same trick as the product grid: hairlines are the ruled background
-                        showing through the gaps between cells. */}
                     <dl className="mt-5 grid grid-cols-2 gap-px overflow-hidden rounded-xl bg-hairline">
                         <Stat label="Rating" value={`${rating}/5`} />
                         <Stat label="Reviews" value={String(reviews)} />
@@ -119,8 +102,7 @@ function PanelBody({ product }: { product: Product }) {
                 </Tabs.Panel>
 
                 <Tabs.Panel value="details" className={tabPanelClassName}>
-                    {/* Deliberately not <Drawer.Description>: that sets aria-describedby on
-                        the dialog, and this text unmounts whenever another tab is active. */}
+             
                     <p className="text-sm leading-relaxed text-brand/80">
                         {description ?? "No description has been written for this product yet."}
                     </p>

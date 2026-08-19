@@ -5,7 +5,6 @@ import Link from "next/link"
 import { Eye, EyeOff } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
-// Four-point sparkle used as the wordmark-less logo at the top of the card.
 function Sparkle({ className }: { className?: string }) {
     return (
         <svg viewBox="0 0 32 32" className={className} aria-hidden>
@@ -40,18 +39,13 @@ function GoogleMark({ className }: { className?: string }) {
     )
 }
 
-// The reference uses rule-underlined fields whose label doubles as the placeholder,
-// so the visible label is the placeholder and the real <label> stays screen-reader only.
 const fieldClass =
-    // The focus state thickens the rule and trims a pixel of padding, so the field
-    // does not shift the layout when it gains focus.
+  
     "w-full border-b border-neutral-900 bg-transparent pb-3 text-[15px] text-neutral-900 outline-none placeholder:text-neutral-900 focus-visible:border-b-2 focus-visible:pb-[11px]"
 
 export default function LoginForm() {
     const [showPassword, setShowPassword] = React.useState(false)
 
-    // Sized by its own content and capped, so the parent's items-center has
-    // something to centre — a full-height card would just fill the column.
     return (
         <div className="flex w-full max-w-md flex-col bg-white px-10 py-14 sm:px-16">
             <Sparkle className="mx-auto size-8 text-neutral-900" />
