@@ -6,6 +6,7 @@ import { Beaker, Droplets, Leaf, Package, Ruler, ShoppingBag, Tag, X } from "luc
 import type { LucideIcon } from "lucide-react"
 import type { ReactNode } from "react"
 
+import { useCartStore } from "@/store/store"
 import { ProductImage, Rating, type Product } from "@/uicomps/ProductCard"
 import { productDrawer } from "@/uicomps/productDrawer"
 
@@ -39,6 +40,10 @@ function PanelBody({ product }: { product: Product }) {
     const { name, price, rating, reviews, isNew, image, description, size, sku } = product
     const inStock = product.stock === undefined || product.stock > 0
 
+    // Subscribing to the action alone, not to items — this panel never renders
+    // the cart, so it should not re-render when the cart changes.
+    const addToCart = useCartStore((state) => state.addToCart)
+
     return (
         // min-h-0 lets the tab area, not the panel, absorb the leftover height.
         <Drawer.Content className="flex h-full min-h-0 flex-col text-brand">
@@ -53,6 +58,7 @@ function PanelBody({ product }: { product: Product }) {
                 <button
                     type="button"
                     disabled={!inStock}
+                    onClick={() => addToCart(product)}
                     className="flex items-center gap-2 rounded-full bg-brand px-5 py-2.5 text-sm text-paper transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand disabled:opacity-40"
                 >
                     <ShoppingBag className="size-4" />
