@@ -1,5 +1,5 @@
+"use client"
 import { Coffee, Dumbbell, ShoppingCart, Shirt } from "lucide-react"
-import NavBar from "@/uicomps/Navbar"
 import HeroSection from "@/uicomps/HeroSection"
 import OverviewCard from "@/uicomps/OverviewCard"
 import StatCard from "@/uicomps/StatCard"
@@ -15,9 +15,7 @@ const CATEGORIES = [
 
 export default function Dashboard() {
     return (
-        // One container owns the page margin; nothing inside re-declares px.
-        <div className="min-h-screen w-full bg-linear-to-b/oklab from-[#6E0B0B] from-5% via-[#D8400A] via-45% to-[#F3B45E] px-10 py-6">
-            <NavBar />
+        <div>
 
             <div className="grid items-end gap-12 pb-14 pt-8 lg:grid-cols-[1fr_auto]">
                 <HeroSection />
