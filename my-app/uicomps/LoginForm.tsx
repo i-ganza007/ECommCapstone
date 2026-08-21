@@ -2,6 +2,9 @@
 
 import * as React from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+
+import { useSessionStore } from "@/store/session"
 import { Eye, EyeOff } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -45,6 +48,21 @@ const fieldClass =
 
 export default function LoginForm() {
     const [showPassword, setShowPassword] = React.useState(false)
+    const router = useRouter()
+    const signIn = useSessionStore((state) => state.signIn)
+
+    // There is no server to authenticate against, so this only records the email
+    // locally. The password is deliberately not read, stored or checked — see the
+    // warning at the top of store/session.ts.
+    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault()
+
+        const email = new FormData(event.currentTarget).get("email")
+        if (typeof email !== "string" || email.trim() === "") return
+
+        signIn(email)
+        router.push("/productList")
+    }
 
     return (
         <div className="flex w-full max-w-md flex-col bg-white px-10 py-14 sm:px-16">
@@ -57,10 +75,7 @@ export default function LoginForm() {
                 <p className="mt-3 text-[15px] text-neutral-800">Please enter your details</p>
             </div>
 
-            <form
-                className="mt-12 flex flex-col"
-                onSubmit={(e) => e.preventDefault()}
-            >
+            <form className="mt-12 flex flex-col" onSubmit={handleSubmit}>
                 <label htmlFor="login-email" className="sr-only">
                     Email
                 </label>

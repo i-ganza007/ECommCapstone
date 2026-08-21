@@ -2,6 +2,7 @@
 
 import { Drawer } from "@base-ui/react/drawer"
 import { Tabs } from "@base-ui/react/tabs"
+import Link from "next/link"
 import { Beaker, Droplets, Leaf, Package, Ruler, ShoppingBag, Tag, X } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 import type { ReactNode } from "react"
@@ -45,15 +46,28 @@ function PanelBody({ product }: { product: Product }) {
                     <X className="size-4" />
                 </Drawer.Close>
 
-                <button
-                    type="button"
-                    disabled={!inStock}
-                    onClick={() => addToCart(product)}
-                    className="flex items-center gap-2 rounded-full bg-brand px-5 py-2.5 text-sm text-paper transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand disabled:opacity-40"
-                >
-                    <ShoppingBag className="size-4" />
-                    {inStock ? "Add to bag" : "Sold out"}
-                </button>
+                <div className="flex items-center gap-2">
+                    {/* The drawer is a quick look; variants and the Buy flow live on
+                        the full page, so it always offers a way through to it. */}
+                    {sku && (
+                        <Link
+                            href={`/productList/${sku}`}
+                            className="rounded-full border border-hairline px-4 py-2.5 text-sm transition-colors hover:bg-hairline/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+                        >
+                            Full details
+                        </Link>
+                    )}
+
+                    <button
+                        type="button"
+                        disabled={!inStock}
+                        onClick={() => addToCart(product)}
+                        className="flex items-center gap-2 rounded-full bg-brand px-5 py-2.5 text-sm text-paper transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand disabled:opacity-40"
+                    >
+                        <ShoppingBag className="size-4" />
+                        {inStock ? "Add to bag" : "Sold out"}
+                    </button>
+                </div>
             </div>
 
             <div className="shrink-0 border-b border-hairline px-6 py-5">

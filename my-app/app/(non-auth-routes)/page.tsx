@@ -1,36 +1,34 @@
-"use client"
-import { Coffee, Dumbbell, ShoppingCart, Shirt } from "lucide-react"
-import HeroSection from "@/uicomps/HeroSection"
-import OverviewCard from "@/uicomps/OverviewCard"
-import StatCard from "@/uicomps/StatCard"
-import RecentTransactions from "@/uicomps/RecentTransactions"
-import InvestmentPerformance from "@/uicomps/InvestmentPerformance"
+import type { Metadata } from "next"
 
-const CATEGORIES = [
-    { label: "In Stock", icon: ShoppingCart, amount: 604.36, delta: 2.46 },
-    { label: "Low Stock", icon: Shirt, amount: 296.65, delta: -1.84 },
-    { label: "Out of Stock", icon: Coffee, amount: 206.48, delta: -2.62 },
-    { label: "Drafted Products", icon: Dumbbell, amount: 182.44, delta: 0.83 },
-]
+import { BRAND } from "@/data/home"
+import HomeHero from "@/uicomps/home/HomeHero"
+import HomeStatement from "@/uicomps/home/HomeStatement"
+import FeaturedProducts from "@/uicomps/home/FeaturedProducts"
+import WhyUs from "@/uicomps/home/WhyUs"
+import JournalSection from "@/uicomps/home/JournalSection"
+import TalkToUs from "@/uicomps/home/TalkToUs"
+import SiteFooter from "@/uicomps/home/SiteFooter"
 
-export default function Dashboard() {
+export const metadata: Metadata = {
+    title: BRAND.name,
+    description: "A short, deliberate range of skincare. Twelve products, no filler.",
+}
+
+/**
+ * The landing page is only an order of sections — each one owns its own layout
+ * and pulls its own copy from data/home.ts, so reordering the page is a matter
+ * of moving a line here.
+ */
+export default function Home() {
     return (
-        <div>
-
-            <div className="grid items-end gap-12 pb-14 pt-8 lg:grid-cols-[1fr_auto]">
-                <HeroSection />
-            </div>
-
-            <main className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
-                <OverviewCard className="md:col-span-2 xl:row-span-2" />
-
-                {CATEGORIES.map((c) => (
-                    <StatCard key={c.label} {...c} />
-                ))}
-
-                <RecentTransactions className="md:col-span-2" />
-                <InvestmentPerformance className="md:col-span-2" />
-            </main>
+        <div className="pb-8">
+            <HomeHero />
+            <HomeStatement />
+            <FeaturedProducts />
+            <WhyUs />
+            <JournalSection />
+            <TalkToUs />
+            <SiteFooter />
         </div>
     )
 }

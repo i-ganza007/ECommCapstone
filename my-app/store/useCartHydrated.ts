@@ -1,22 +1,9 @@
 "use client"
 
-import * as React from "react"
-
 import { useCartStore } from "@/store/store"
+import { usePersistHydrated } from "@/store/usePersistHydrated"
 
-
+/** True once the persisted cart has been read from localStorage. */
 export function useCartHydrated(): boolean {
-    const [hydrated, setHydrated] = React.useState(false)
-
-    React.useEffect(() => {
-        const unsubscribe = useCartStore.persist.onFinishHydration(() => setHydrated(true))
-
-        void useCartStore.persist.rehydrate()
-
-        if (useCartStore.persist.hasHydrated()) setHydrated(true)
-
-        return unsubscribe
-    }, [])
-
-    return hydrated
+    return usePersistHydrated(useCartStore)
 }

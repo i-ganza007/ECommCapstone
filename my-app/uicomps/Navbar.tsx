@@ -24,7 +24,7 @@ export default function Navbar() {
                 {LINKS.map((link) => (
                     <Link
                         key={link}
-                        href={link == "Product List" ? `/productList` : link == "Dashboard" ? `/` : link == "Variants" ? `/variants` : `/assets`}
+                        href={link == "Home" ? `/` : link == "Product List" ? `/productList` : link == "Dashboard" ? `/dashboard` : link == "Variants" ? `/variants` : `/assets`}
                         className={cn(
                             navItem,
                             link === activeLink
