@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -12,14 +12,23 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-export default function ShadcnDropDownCheckbox({children}:{children:React.ReactNode}) {
+export default function ShadcnDropDownCheckbox({
+  children,
+  className,
+}: {
+  children: React.ReactNode
+  /** Styles the trigger itself — it is the button, so nothing may wrap it in one. */
+  className?: string
+}) {
   const [showStatusBar, setShowStatusBar] = React.useState(true)
   const [showActivityBar, setShowActivityBar] = React.useState(false)
   const [showPanel, setShowPanel] = React.useState(false)
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className={"flex justify-center items-center"}>{children}</DropdownMenuTrigger>
+      <DropdownMenuTrigger className={cn("flex items-center justify-center", className)}>
+        {children}
+      </DropdownMenuTrigger>
       <DropdownMenuContent className="w-40 text-brand">
         <DropdownMenuGroup>
           <DropdownMenuLabel className="text-brand">Appearance</DropdownMenuLabel>

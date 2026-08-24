@@ -1,41 +1,57 @@
-import { BRAND, INTENTS } from "@/data/home"
-import LoginIllustration from "@/uicomps/LoginIllustration"
+import { HERO } from "@/data/home"
 import Panel from "@/uicomps/home/Panel"
 import PillLink from "@/uicomps/home/PillLink"
 import { eyebrowClass } from "@/uicomps/home/SectionHeading"
 
+/**
+ * Soft banded curves behind the headline. There are no photographs in the
+ * project, so the hero "image" is drawn rather than loaded — it costs no
+ * request and it cannot arrive after the text it sits behind.
+ */
+function HeroWaves() {
+    return (
+        <svg
+            aria-hidden
+            viewBox="0 0 1200 600"
+            preserveAspectRatio="none"
+            className="pointer-events-none absolute inset-0 h-full w-full"
+        >
+            <path d="M0 380 C 300 250 700 470 1200 320 L1200 600 L0 600 Z" fill="currentColor" opacity="0.07" />
+            <path d="M0 470 C 350 350 800 540 1200 410 L1200 600 L0 600 Z" fill="currentColor" opacity="0.07" />
+            <path d="M0 190 C 260 120 620 240 1200 150" stroke="currentColor" strokeWidth="1.5" fill="none" opacity="0.18" />
+        </svg>
+    )
+}
+
 export default function HomeHero() {
     return (
-        <Panel tone="brand">
-            <div className="grid items-center gap-10 px-8 py-12 lg:grid-cols-[1.15fr_1fr] lg:px-12 lg:py-16">
-                <div>
-                    <p className={eyebrowClass}>welcome to {BRAND.name}</p>
+        <Panel tone="brand" className="relative">
+            <HeroWaves />
+
+            {/* min-h keeps the headline and the button inside the first screen on
+                a laptop; the panel still grows if the copy is edited longer. */}
+            <div className="relative grid min-h-[66vh] place-items-center px-8 py-20 text-center lg:px-12">
+                <div className="max-w-3xl">
+                    <p className={eyebrowClass}>{HERO.eyebrow}</p>
 
                     {/* The only h1 on the page. SectionHeading renders h2s, so the
                         hero writes its own rather than bending that component. */}
                     <h1 className="mt-6 font-serif text-5xl leading-[0.95] lowercase lg:text-7xl">
-                        skincare that earns its place on your shelf
+                        {HERO.headline}
                     </h1>
 
-                    <div className="mt-10">
-                        <p className={eyebrowClass}>how can we help?</p>
-                        <ul className="mt-4 flex flex-wrap gap-2.5">
-                            {INTENTS.map((intent) => (
-                                <li key={intent.href}>
-                                    <PillLink href={intent.href} variant="onBrand">
-                                        {intent.label}
-                                    </PillLink>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
+                    <p className="mx-auto mt-8 max-w-xl leading-relaxed opacity-90 lg:text-lg">
+                        {HERO.welcome}
+                    </p>
 
-                {/* Reusing the sign-in illustration: it already carries the app's
-                    voice, and its eyes follow the cursor, which does the job the
-                    reference's animated hand does. */}
-                <div className="flex justify-center lg:justify-end">
-                    <LoginIllustration className="w-full max-w-sm" />
+                    {/* One button. Anything else here competes with it. */}
+                    <PillLink
+                        href={HERO.cta.href}
+                        variant="onBrand"
+                        className="mt-10 px-8 py-3 text-base"
+                    >
+                        {HERO.cta.label}
+                    </PillLink>
                 </div>
             </div>
         </Panel>

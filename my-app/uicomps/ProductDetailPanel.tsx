@@ -7,6 +7,7 @@ import { Beaker, Droplets, Leaf, Package, Ruler, ShoppingBag, Tag, X } from "luc
 import type { LucideIcon } from "lucide-react"
 import type { ReactNode } from "react"
 
+import { money } from "@/lib/money"
 import { useCartStore } from "@/store/store"
 import { ProductImage, Rating, type Product } from "@/uicomps/ProductCard"
 import { productDrawer } from "@/uicomps/productDrawer"
@@ -75,7 +76,7 @@ function PanelBody({ product }: { product: Product }) {
                 <Drawer.Title className="font-serif text-3xl lowercase">{name}</Drawer.Title>
 
                 <div className="mt-3 flex items-center justify-between gap-4">
-                    <p className="font-serif text-lg italic">${price.toFixed(2)} eur</p>
+                    <p className="font-serif text-lg italic">{money(price)}</p>
                     <span className="flex items-center gap-2 text-xs">
                         <Rating rating={rating} />
                         <span>

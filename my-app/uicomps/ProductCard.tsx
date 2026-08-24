@@ -3,6 +3,7 @@
 import { Drawer } from "@base-ui/react/drawer"
 import Image from "next/image"
 
+import { money } from "@/lib/money"
 import { productDrawer } from "@/uicomps/productDrawer"
 
 export type Product = {
@@ -87,7 +88,7 @@ export default function ProductCard(product: Product) {
                     {name}
                 </Drawer.Trigger>
             </h2>
-            <p className="font-serif text-sm italic">${price.toFixed(2)} eur</p>
+            <p className="font-serif text-sm italic">{money(price)}</p>
         </article>
     )
 }

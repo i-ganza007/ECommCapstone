@@ -7,17 +7,7 @@ import { useRouter } from "next/navigation"
 import { useSessionStore } from "@/store/session"
 import { Eye, EyeOff } from "lucide-react"
 import { Button } from "@/components/ui/button"
-
-function Sparkle({ className }: { className?: string }) {
-    return (
-        <svg viewBox="0 0 32 32" className={className} aria-hidden>
-            <path
-                d="M16 0c1 8.5 7.5 15 16 16-8.5 1-15 7.5-16 16-1-8.5-7.5-15-16-16C8.5 15 15 8.5 16 0Z"
-                fill="currentColor"
-            />
-        </svg>
-    )
-}
+import Wordmark from "@/uicomps/Wordmark"
 
 function GoogleMark({ className }: { className?: string }) {
     return (
@@ -66,7 +56,12 @@ export default function LoginForm() {
 
     return (
         <div className="flex w-full max-w-md flex-col bg-white px-10 py-14 sm:px-16">
-            <Sparkle className="mx-auto size-8 text-neutral-900" />
+            {/* Takes the card's own ink rather than the brand coral — this is a
+                monochrome white card and the mark should not be the loudest
+                thing on it. */}
+            <div className="flex justify-center text-neutral-900">
+                <Wordmark variant="stacked" size="md" descriptor="skincare" />
+            </div>
 
             <div className="mt-14 text-center">
                 <h1 className="text-4xl font-bold tracking-tight text-neutral-900">

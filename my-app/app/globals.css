@@ -11,6 +11,8 @@
   --font-mono: var(--font-geist-mono);
   --font-serif: var(--font-playfair);
   --font-heading: var(--font-sans);
+  /* Reserved for the wordmark. Nothing else should reach for it. */
+  --font-display: var(--font-cormorant);
   /* Storefront palette: coral ink on off-white, with hairline rules. */
   --color-brand: #df4222;
   --color-hairline: #f0c9c1;

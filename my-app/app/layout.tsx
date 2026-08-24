@@ -1,11 +1,25 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Montserrat, Playfair_Display } from "next/font/google";
+import {
+  Cormorant_Garamond,
+  Geist,
+  Geist_Mono,
+  Montserrat,
+  Playfair_Display,
+} from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
 const montserrat = Montserrat({ subsets: ["latin"], variable: "--font-montserrat" });
 
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
+
+// The wordmark's face, and only the wordmark's — light Cormorant is drawn for
+// display sizes and goes weak in a paragraph. Two weights, nothing else.
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["300", "400"],
+  variable: "--font-cormorant",
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +41,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={cn("min-h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", montserrat.variable, playfair.variable)}
+      className={cn("min-h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", montserrat.variable, playfair.variable, cormorant.variable)}
     >
       <body className="min-h-screen w-full">{children}</body>
     </html>
