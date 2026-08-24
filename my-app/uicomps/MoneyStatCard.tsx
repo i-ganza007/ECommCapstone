@@ -1,7 +1,5 @@
 import Money from "./Money"
 
-// Block-level variant used inside StatCard: a caption above the figure.
-// Because this renders a <div>, its parent must not be a <p>.
 export default function MoneyStatCard({
     amount,
     label = "Total Products",

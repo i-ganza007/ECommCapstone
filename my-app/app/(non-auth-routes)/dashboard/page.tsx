@@ -15,7 +15,6 @@ const CATEGORIES = [
 
 export default function Dashboard() {
     return (
-        // One container owns the page margin; nothing inside re-declares px.
         <div>
 
             <div className="grid items-end gap-12 pb-14 pt-8 lg:grid-cols-[1fr_auto]">

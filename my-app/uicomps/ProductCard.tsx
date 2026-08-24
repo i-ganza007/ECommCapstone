@@ -54,7 +54,6 @@ export function ProductImage({
             className="object-contain transition-transform duration-300 group-hover:scale-105"
         />
     ) : (
-        // Placeholder silhouette until real product photography exists.
         <div className="h-44 w-16 rounded-t-2xl rounded-b bg-linear-to-b from-zinc-200 to-zinc-300 transition-transform duration-300 group-hover:scale-105" />
     )
 }
@@ -79,9 +78,6 @@ export default function ProductCard(product: Product) {
                 <ProductImage name={name} image={image} />
             </div>
 
-            {/* The trigger is just the title, but its ::after is stretched over the whole
-                card — so the entire tile is clickable while the accessible name stays
-                the product name, and a <button> never has to wrap heading markup. */}
             <h2 className="text-center font-serif text-[15px]">
                 <Drawer.Trigger
                     handle={productDrawer}

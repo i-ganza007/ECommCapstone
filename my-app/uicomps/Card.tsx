@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils"
 
-// The white rounded panel every dashboard tile sits on.
 export default function Card({
     className,
     children,

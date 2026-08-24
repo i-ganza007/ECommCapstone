@@ -1,5 +1,4 @@
-// Renders "$1,842.56" with the cents de-emphasised, the way the reference does it.
-// Inline-only (a <span>), so it is safe to drop inside a <p> or another <span>.
+
 export default function Money({
     amount,
     className = "",
