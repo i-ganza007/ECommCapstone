@@ -83,7 +83,7 @@ export default function OverviewCard({ className }: { className?: string }) {
                         >
                             <div className="whitespace-nowrap rounded-2xl bg-zinc-900 px-4 py-3 text-white shadow-lg">
                                 <span className="text-lg font-semibold">
-                                    <Money amount={VALUES[active]} centsClassName="text-zinc-500" />
+                                    <Money amount={VALUES[active]} codeClassName="text-zinc-500" />
                                 </span>
                                 <span className="mt-1 block text-xs text-zinc-400">
                                     for {MONTHS[Math.floor(active / BARS_PER_MONTH)]} 2026

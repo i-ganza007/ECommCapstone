@@ -53,7 +53,7 @@ export default function RecentTransactions({ className }: { className?: string }
                                 }`}
                             >
                                 {t.amount < 0 ? "-" : "+"}
-                                <Money amount={Math.abs(t.amount)} centsClassName="opacity-70" />
+                                <Money amount={Math.abs(t.amount)} codeClassName="opacity-70" />
                             </span>
                         </div>
                     </li>

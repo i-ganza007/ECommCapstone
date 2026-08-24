@@ -14,9 +14,24 @@ import { createJSONStorage, persist } from "zustand/middleware"
  * verified on every request, at which point this file should be deleted rather
  * than extended.
  */
+/**
+ * What the sign-up form collected. There is no password field here and there
+ * never should be — nothing in this project is entitled to keep one.
+ */
+export interface Profile {
+    firstName: string
+    lastName: string
+    email: string
+    /** `YYYY-MM-DD`. Stored as the date, not the age, so it stays true. */
+    dob: string
+}
+
 interface SessionState {
     email: string | null
+    /** Only set by signing up on this device; signing in cannot recover it. */
+    profile: Profile | null
     signIn: (email: string) => void
+    signUp: (profile: Profile) => void
     signOut: () => void
 }
 
@@ -34,15 +49,31 @@ export const useSessionStore = create<SessionState>()(
     persist(
         (set) => ({
             email: null,
-            signIn: (email) => set({ email: email.trim() || null }),
-            signOut: () => set({ email: null }),
+            profile: null,
+
+            // Signing in knows nothing but the address that was typed. It leaves
+            // any profile from a previous sign-up on this device alone unless the
+            // address has changed, in which case that profile is not this person's.
+            signIn: (email) =>
+                set((state) => {
+                    const next = email.trim() || null
+                    return {
+                        email: next,
+                        profile: state.profile?.email === next ? state.profile : null,
+                    }
+                }),
+
+            signUp: (profile) =>
+                set({ email: profile.email.trim() || null, profile }),
+
+            signOut: () => set({ email: null, profile: null }),
         }),
         {
             name: "session",
             storage: createJSONStorage(() =>
                 typeof window === "undefined" ? noopStorage : window.localStorage,
             ),
-            partialize: (state) => ({ email: state.email }),
+            partialize: (state) => ({ email: state.email, profile: state.profile }),
             // Same reason as the cart: rehydrating during creation would make the
             // first client render disagree with the server's.
             skipHydration: true,

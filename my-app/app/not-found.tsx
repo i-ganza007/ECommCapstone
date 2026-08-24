@@ -1,10 +1,9 @@
 import { CircleArrowRight } from "lucide-react"
 import { Anton } from "next/font/google"
-import Image from "next/image"
 import Link from "next/link"
 
-import Logo from "@/images/frontend_logo.png"
 import BrushCross from "@/uicomps/BrushCross"
+import Wordmark from "@/uicomps/Wordmark"
 
 // Anton is the closest thing on Google Fonts to the ultra-condensed poster face
 // in the reference. Loaded in this file rather than the root layout so the extra
@@ -16,7 +15,9 @@ const ORANGE = "#ee7540"
 // Only routes that exist. Linking a 404 page at more missing pages would be a
 // joke at the visitor's expense.
 const NAV = [
-    { label: "Dashboard", href: "/" },
+    // Was pointing at "/" while labelled Dashboard; now that these render, the
+    // label and the destination have to agree.
+    { label: "Dashboard", href: "/dashboard" },
     { label: "Products", href: "/productList" },
     { label: "Checkout", href: "/checkout" },
 ] as const
@@ -33,7 +34,21 @@ export default function NotFound() {
             className="flex min-h-screen flex-col text-black"
             style={{ backgroundColor: ORANGE }}
         >
-            
+            {/* Black on the orange ground: this page has exactly two colours and
+                the mark is not the place to introduce a third. */}
+            <header className="flex items-center justify-between gap-6 px-3.5 py-5">
+                <Link href="/" className={headerLinkClass}>
+                    <Wordmark variant="inline" size="sm" />
+                </Link>
+
+                <nav className="hidden gap-6 text-[15px] sm:flex">
+                    {NAV.map((item) => (
+                        <Link key={item.href} href={item.href} className={headerLinkClass}>
+                            {item.label}
+                        </Link>
+                    ))}
+                </nav>
+            </header>
 
             <main className="flex flex-1 flex-col ">
                 {/* The SVGs are decorative duplicates of one another, so the real

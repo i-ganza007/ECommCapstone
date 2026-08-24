@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Maison Coral">
+  <!--
+    The wordmark's monogram form. A favicon is read at 16px, where the full
+    "MAISON CORAL" lockup is an illegible smear — the initials are what the
+    Wordmark component's `monogram` variant exists for.
+
+    Coral tile with paper letters rather than the reverse: a filled shape holds
+    its edges in a crowded tab strip, and it reads on a light or a dark browser
+    chrome without needing a second version.
+
+    The font is named but cannot be relied on. Favicons render outside the page,
+    where webfonts are not loaded, so this falls back to Georgia — a serif with
+    enough stroke contrast to stay in the family of the real mark.
+  -->
+  <rect width="64" height="64" fill="#df4222"/>
+  <text
+    x="33"
+    y="42.5"
+    fill="#faf8f6"
+    font-family="'Cormorant Garamond', Cormorant, Georgia, 'Times New Roman', serif"
+    font-size="30"
+    letter-spacing="2"
+    text-anchor="middle"
+  >MC</text>
+</svg>

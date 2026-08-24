@@ -3,6 +3,7 @@
 import { Minus, Plus, X } from "lucide-react"
 import Link from "next/link"
 
+import { money } from "@/lib/money"
 import {
     cartItemId,
     selectCartCount,
@@ -12,8 +13,6 @@ import {
 } from "@/store/store"
 import { useCartHydrated } from "@/store/useCartHydrated"
 import { ProductImage } from "@/uicomps/ProductCard"
-
-const money = (amount: number) => `$${amount.toFixed(2)} eur`
 
 export default function CheckoutPage() {
     const hydrated = useCartHydrated()

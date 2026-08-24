@@ -1,6 +1,6 @@
 "use client"
 import type { ReactNode } from "react"
-import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,10 +14,19 @@ import {
 // Keep menu text on the brand coral, including while an item is focused/hovered.
 const itemClass = "text-brand focus:text-brand focus:**:text-brand"
 
-export default function ShadcnDropDown({ children }: { children: ReactNode }) {
+export default function ShadcnDropDown({
+  children,
+  className,
+}: {
+  children: ReactNode
+  /** Styles the trigger itself — it is the button, so nothing may wrap it in one. */
+  className?: string
+}) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className={"flex justify-center items-center"}>{children}</DropdownMenuTrigger>
+      <DropdownMenuTrigger className={cn("flex items-center justify-center", className)}>
+        {children}
+      </DropdownMenuTrigger>
       <DropdownMenuContent className="text-brand">
         <DropdownMenuGroup>
           <DropdownMenuLabel className="text-brand">My Account</DropdownMenuLabel>
